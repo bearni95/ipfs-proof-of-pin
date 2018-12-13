@@ -1,0 +1,15 @@
+{
+  "name": "ipfs-ownership-verification",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ipfs": "^0.33.1",
+    "random-bytes": "^1.0.0"
+  }
+}
