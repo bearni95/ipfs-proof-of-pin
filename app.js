@@ -4,6 +4,10 @@ const ipfs = new IPFS()
 const randomBytes = require('random-bytes')
 // Used to hash the seed
 const keccak256 = require('js-sha3').keccak256
+// We will use the only-hash flag for ipfs when we only
+// require hash calculation
+
+const ONLY_HASH = {'only-hash' : true}
 
 let Paul = {}
 let Carole = {}
@@ -30,7 +34,7 @@ ipfs.on('ready', async () => {
 
   // Now Paul generates the seeded hash for the file
   Paul['seedContent'] = content.toString('hex') + Paul['seed']
-  let u2 = await ipfs.files.add(Buffer.from(Paul['seedContent'], 'hex'))
+  let u2 = await ipfs.files.add(ONLY_HASH, Buffer.from(Paul['seedContent'], 'hex'))
   Paul['seedHash'] = u2[0].hash
   console.log('Paul\'s seeded hash:', Paul['seedHash'])
 
@@ -40,12 +44,12 @@ ipfs.on('ready', async () => {
   // Carole can then grab the original file, append the seed
   // and generate the final hash on her machine
   Carole['seedContent'] = content.toString('hex') + Carole['seed']
-  let u3 = await ipfs.files.add(Buffer.from(Carole['seedContent'], 'hex'))
+  let u3 = await ipfs.files.add(ONLY_HASH, Buffer.from(Carole['seedContent'], 'hex'))
   Carole['seedHash'] = u3[0].hash
   console.log('Carole\s seeded hash:', Carole['seedHash'])
   // Carole would now send her seedHash back to Paul for verification
   console.log('Is the seeded hash provided by Carole the one Paul expected?')
   console.log(Paul['seedHash'] === Carole['seedHash'])
   process.exit()
-  
+
 })
